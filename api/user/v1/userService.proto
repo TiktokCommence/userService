@@ -1,0 +1,77 @@
+syntax="proto3";
+
+package user;
+
+option go_package="userService/api/user/v1";
+
+service UserService {
+  rpc Register(RegisterReq) returns (RegisterResp) {}
+  rpc Login(LoginReq) returns (LoginResp) {}
+  rpc Logout(LogoutReq) returns (LogoutResp) {}
+  rpc DeleteUser(DeleteReq) returns (DeleteResp) {}
+  rpc UpdateUser(UpdateReq) returns (UpdateResp) {}
+  rpc GetUserInfo(GetReq) returns (GetResp) {}
+  rpc SendVerifyCode(SendReq) returns (SendResp) {}
+}
+
+message RegisterReq {
+  string email = 1;
+  string password = 2;
+  string confirm_password = 3;
+  string verifyCode = 4;
+}
+
+message RegisterResp {
+  uint64 user_id = 1;
+}
+
+message LoginReq {
+  string email= 1;
+  string password = 2;
+}
+
+message LoginResp {
+  uint64 user_id = 1;
+}
+
+message LogoutReq {
+  uint64 user_id = 1;
+}
+
+message LogoutResp {
+  bool success = 1;
+}
+message DeleteReq{
+  uint64 user_id = 1;
+}
+message DeleteResp {
+  bool success = 1;
+}
+message UpdateReq {
+  uint64 id =1;
+  optional string name = 2;
+  optional int32 age = 3;
+  optional string addr1 = 4;
+  optional string addr2 = 5;
+  optional string phone = 6;
+}
+message UpdateResp {
+  bool success = 1;
+}
+message GetReq {
+  uint64 user_id = 1;
+}
+message GetResp {
+  optional string name = 1;
+  string email = 2;
+  optional int32 age = 3;
+  optional string addr1 = 4;
+  optional string addr2 = 5;
+  optional string phone = 6;
+}
+message SendReq {
+  string email = 1;
+}
+message SendResp {
+  string code = 1;
+}
