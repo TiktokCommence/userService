@@ -19,9 +19,9 @@ import (
 // go build -ldflags "-X main.Version=x.y.z"
 var (
 	// Name is the name of the compiled software.
-	Name string
+	Name string = "user_service"
 	// Version is the version of the compiled software.
-	Version string
+	Version string = "v1"
 	// flagconf is the config flag.
 	flagconf string
 	// flagLog 是 日志记录在哪里

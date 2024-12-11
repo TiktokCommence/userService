@@ -2,6 +2,7 @@ package registry
 
 import (
 	"github.com/TiktokCommence/userService/internal/conf"
+	"github.com/go-kratos/kratos/contrib/registry/etcd/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	clientv3 "go.etcd.io/etcd/client/v3"
