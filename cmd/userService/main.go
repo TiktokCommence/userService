@@ -11,7 +11,6 @@ import (
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	_ "go.uber.org/automaxprocs"
 )
@@ -51,19 +50,6 @@ func newApp(logger log.Logger, gs *grpc.Server, r *etcd.Registry) *kratos.App {
 
 func main() {
 	flag.Parse()
-	f, err := os.OpenFile(flagLog, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		f = os.Stdout
-	}
-	logger := log.With(log.NewStdLogger(f),
-		"ts", log.DefaultTimestamp,
-		"caller", log.DefaultCaller,
-		"service.id", id,
-		"service.name", Name,
-		"service.version", Version,
-		"trace.id", tracing.TraceID(),
-		"span.id", tracing.SpanID(),
-	)
 	c := config.New(
 		config.WithSource(
 			file.NewSource(flagconf),
@@ -79,6 +65,12 @@ func main() {
 	if err := c.Scan(&bc); err != nil {
 		panic(err)
 	}
+
+	logger := log.With(NewLogger(bc.Log),
+		"service.id", id,
+		"service.name", Name,
+		"service.version", Version,
+	)
 
 	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Email, bc.Registry, logger)
 	if err != nil {

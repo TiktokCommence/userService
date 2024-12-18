@@ -10,6 +10,7 @@ message Bootstrap {
   Data data = 2;
   EmailConf email  =3;
   RegistryConf registry = 4;
+  LogConf log = 5;
 }
 
 message Server {
@@ -46,4 +47,24 @@ message EmailConf {
 }
 message RegistryConf {
   string addr = 1;
+}
+
+message LogConf {
+  bool stdout =1;//是否打印到控制台
+  message FileConf {
+    string path = 1;
+    string name = 2;
+    int64 maxSize = 3; //单位MB
+    int64 maxBackups = 4;
+    int64 maxAge = 5; //单位天
+    bool compress = 6;//是否压缩
+  }
+  message KafkaConf {
+    repeated string addr = 1;
+    string topic = 2;
+  }
+  bool enableFile =2;
+  bool enableKafka = 3;
+  FileConf file = 4;
+  KafkaConf kafka = 5;
 }
